@@ -1,4 +1,6 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Notion as a CMS
+
+An example app using Notion as a headless CMS to generate a Static Site (WIP)
 
 ## Getting Started
 
