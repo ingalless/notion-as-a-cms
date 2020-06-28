@@ -73,7 +73,6 @@ export default function Page({ post, blocks, table }: Props) {
 interface TableProps {
   data: BlockMapType;
 }
-function Table();
 
 export async function getStaticPaths() {
   const table = await getAllPosts();
