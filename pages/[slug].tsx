@@ -1,9 +1,7 @@
-import Head from "next/head";
 import { NotionRenderer, BlockMapType } from "react-notion";
+import { RootPage } from "../types";
 
-type Post = { id: string; slug: string; name: string };
-
-const getAllPosts = async (): Promise<Post[]> => {
+const getAllPosts = async (): Promise<RootPage[]> => {
   return await fetch(
     `https://notion-api.ingalless.com/v1/table/101251eb21534f20ade05c4eb0702607`
   ).then((res) => res.json());
@@ -24,20 +22,44 @@ export async function getStaticProps({
     `https://notion-api.ingalless.com/v1/page/${post!.id}`
   ).then((res) => res.json());
 
+  let table = null;
+  if (post.type === "table") {
+    const tableBlock: any = Object.values(blocks).find(
+      (block: any) => block.value.type === "collection_view"
+    );
+    if (tableBlock !== undefined) {
+      table = await fetch(
+        `https://notion-api.ingalless.com/v1/table/${tableBlock!.value.id}`
+      ).then((res) => res.json());
+    }
+  }
+
   return {
     props: {
       blocks,
       post,
+      table,
     },
   };
 }
 
 interface Props {
-  post: Post;
+  post: RootPage;
   blocks: BlockMapType;
+  table?: RootPage[];
 }
-export default function Page({ post, blocks }: Props) {
-  console.log(blocks);
+export default function Page({ post, blocks, table }: Props) {
+  if (table) {
+    // we're nesting...
+    return (
+      <ul>
+        {table.map((post) => (
+          <li>{post.name}</li>
+        ))}
+      </ul>
+    );
+  }
+
   return (
     <div style={{ maxWidth: "100vw" }}>
       <h1>{post.name}</h1>
@@ -47,6 +69,11 @@ export default function Page({ post, blocks }: Props) {
     </div>
   );
 }
+
+interface TableProps {
+  data: BlockMapType;
+}
+function Table();
 
 export async function getStaticPaths() {
   const table = await getAllPosts();

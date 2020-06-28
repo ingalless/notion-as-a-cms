@@ -1,11 +1,8 @@
 import Head from "next/head";
 import Link from "next/link";
+import { RootPage } from "../types";
 
-import { NotionRenderer } from "react-notion";
-
-type Post = { id: string; slug: string; name: string };
-
-const getAllPosts = async (): Promise<Post[]> => {
+const getAllPosts = async (): Promise<RootPage[]> => {
   return await fetch(
     `https://notion-api.ingalless.com/v1/table/101251eb21534f20ade05c4eb0702607`
   ).then((res) => res.json());
@@ -22,7 +19,7 @@ export async function getStaticProps() {
 }
 
 interface Props {
-  posts: Post[];
+  posts: RootPage[];
 }
 export default function Home({ posts }: Props) {
   return (
@@ -36,7 +33,9 @@ export default function Home({ posts }: Props) {
           <ul>
             {posts.map((post) => (
               <li>
-                <Link href={post.slug}>{post.name}</Link>
+                <Link href={post.slug}>
+                  <a>{post.name}</a>
+                </Link>
               </li>
             ))}
           </ul>
