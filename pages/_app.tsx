@@ -3,6 +3,8 @@ import "react-notion/src/styles.css";
 import "prismjs/themes/prism-tomorrow.css";
 import Layout from "../components/layout";
 
+import "../style.css";
+
 function App({ Component, pageProps }: AppProps) {
   return (
     <Layout>

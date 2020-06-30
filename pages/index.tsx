@@ -32,7 +32,7 @@ export default function Home({ posts }: Props) {
         <nav>
           <ul>
             {posts.map((post) => (
-              <li>
+              <li key={post.slug}>
                 <Link href={post.slug}>
                   <a>{post.name}</a>
                 </Link>
